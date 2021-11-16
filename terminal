@@ -1,0 +1,195 @@
+package com.company;
+
+import java.io.*;
+import java.util.Scanner;
+import java.util.Vector;
+
+public class Main {
+    public static class Terminal {
+        Parser parser;
+        BufferedWriter writing;
+        String file="C:\\HP";
+        File obj = new File(file);
+        public void echo(String arg){
+            System.out.println(arg);
+        }
+        public String pwd(){
+            return obj.getPath();
+        }
+        public void  ls(){
+            String[] List_of_Directories = obj.list ( );
+            for (String list_of_directory : List_of_Directories) {
+                System.out.println(list_of_directory);
+            }
+        }
+        public void lsr(){
+            Vector<String>vector=new Vector<>();
+            String[] list=obj.list();
+            for (String s: list){
+                String dir= s;
+                vector.add(dir);
+            }
+            for (int i=vector.size()-1;i>=0;i--){
+                System.out.println(vector.get(i));
+            }
+        }
+        public void mkdir(String args){
+            String [] a;
+            a= args.split(":");
+            if (a[0].equalsIgnoreCase("c")||a[0].equalsIgnoreCase("d")||a[0].equalsIgnoreCase("e")){
+                File theDir = new File(args);
+                if (!theDir.exists()){
+                    theDir.mkdirs();
+                }
+            }else{
+                File theDir = new File(file +"\\"+args);
+                if (!theDir.exists()){
+                    theDir.mkdirs();
+                }
+            }
+        }
+        public void rmdir(String args){
+            String [] a;
+            a= args.split(":");
+            if (a[0].equalsIgnoreCase("c")||a[0].equalsIgnoreCase("d")||a[0].equalsIgnoreCase("e")){
+                File theDir = new File(args);
+                if (theDir.exists()){
+                    theDir.delete();
+                }
+            }else if (a[0].equals("*")){
+                File Path = new File (file);
+                String[] s = Path.list();
+                for (int i=0;i<s.length;i++){
+                    Path=new File(file+"\\"+s[i]);
+                        if (Path.exists()){
+                            Path.delete();
+                        }
+                }
+            }else{
+                File theDir=new File(file+"\\"+args);
+                if (theDir.exists()){
+                    theDir.delete();
+                }
+            }
+        }
+        public void touch(String args){
+            String [] a;
+            a= args.split(":");
+            if (a[0].equalsIgnoreCase("c")||a[0].equalsIgnoreCase("d")||a[0].equalsIgnoreCase("e")){
+                File theDir = new File(args);
+                try {
+                    theDir.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                File theDir = new File(file +"\\"+args);
+                try {
+                    theDir.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        public void cat(String args) throws FileNotFoundException {
+            String[] a=args.split(" ");
+            if (a.length==2){
+                File myObj=new File(file+"\\"+a[1]);
+                Scanner MyReader = new Scanner ( myObj );  
+                while ( MyReader.hasNextLine ( ) ) {        
+                    String info = MyReader.nextLine ( );    
+                    System.out.println(info);               
+                }
+            }else if (a.length>2){
+                File myObj =new File(file+"\\"+a[1]);
+                Scanner MyReader = new Scanner ( myObj );  
+                while ( MyReader.hasNextLine ( ) ) {        
+                    String info = MyReader.nextLine ( );    
+                    System.out.println(info);               
+                }
+                File myObj2 =new File(file+"\\"+a[2]);
+                Scanner MyReader2 = new Scanner ( myObj2 );  
+                while ( MyReader2.hasNextLine ( ) ) {        
+                    String info = MyReader2.nextLine ( );    
+                    System.out.println(info);              
+                }
+            }
+
+        }
+        public void cp(String a1,String a2) throws IOException {
+            File myobj=new File(file+"\\"+a1);
+            FileOutputStream fos=new FileOutputStream(file+"\\"+a2);
+            writing=new BufferedWriter(new OutputStreamWriter(fos));
+            Scanner reading=new Scanner(myobj);
+            while (reading.hasNextLine()){
+                String info=reading.nextLine();
+                writing.write(info);
+                writing.newLine();
+            }
+            writing.close();
+            reading.close();
+        }
+        public void rm(String a){
+            File theDir = new File(file+"\\"+a);
+            if (theDir.exists()){
+                theDir.delete();
+            }
+        }
+        public void cd(String args){
+            String []a;
+            a=args.split(":");
+            if (args.equals("..")){
+                obj=obj.getParentFile();
+                file=obj.getPath();
+            }
+            else if (a[0].equalsIgnoreCase("c")||a[0].equalsIgnoreCase("d")||a[0].equalsIgnoreCase("e")){
+                file=args;
+                obj=new File(args);
+                file=obj.getPath();
+            }
+            else {
+                file+="\\"+args;
+                obj=new File(file);
+            }
+        }
+        //This method will choose the suitable command method to be called
+        public void chooseCommandAction(){}
+    }
+
+    public static void main(String[] args) throws IOException {
+        Scanner input=new Scanner(System.in);
+        Terminal t1=new Terminal();
+        String[] inp;String a;
+        while (true){
+            a=input.nextLine();
+            inp=a.split(" ");
+            if (inp[0].equals("pwd")){
+                System.out.println(t1.pwd());
+            }else if(inp[0].equals("echo")){
+                t1.echo(a);
+            }else if(a.equals("ls -r")){
+                t1.lsr();
+            }else if(inp[0].equals("ls")){
+                t1.ls();
+            }else if(inp[0].equals("mkdir")){
+                t1.mkdir(inp[1]);
+            }else if(inp[0].equals("rmdir")){
+                t1.rmdir(inp[1]);
+            }else if(inp[0].equals("cd")){
+                t1.cd(inp[1]);
+            }else if(inp[0].equals("touch")){
+                t1.touch(inp[1]);
+            }else if(inp[0].equals("cp")){
+                t1.cp(inp[1],inp[2]);
+//            }else if(inp[0].equals("cp -r")){
+//                t1.cpr();
+            }else if(inp[0].equals("rm")){
+                t1.rm(inp[1]);
+            }else if(inp[0].equals("cat")){
+                t1.cat(a);
+            }else if (inp[0].equalsIgnoreCase("exit")){
+                break;
+            }
+        }
+    }
+}
