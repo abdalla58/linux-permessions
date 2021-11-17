@@ -95,23 +95,23 @@ public class Main {
             String[] a=args.split(" ");
             if (a.length==2){
                 File myObj=new File(file+"\\"+a[1]);
-                Scanner MyReader = new Scanner ( myObj );  
-                while ( MyReader.hasNextLine ( ) ) {        
-                    String info = MyReader.nextLine ( );    
-                    System.out.println(info);               
+                Scanner MyReader = new Scanner ( myObj );
+                while ( MyReader.hasNextLine ( ) ) {
+                    String info = MyReader.nextLine ( );
+                    System.out.println(info);
                 }
             }else if (a.length>2){
                 File myObj =new File(file+"\\"+a[1]);
-                Scanner MyReader = new Scanner ( myObj );  
-                while ( MyReader.hasNextLine ( ) ) {        
-                    String info = MyReader.nextLine ( );    
-                    System.out.println(info);               
+                Scanner MyReader = new Scanner ( myObj );
+                while ( MyReader.hasNextLine ( ) ) {
+                    String info = MyReader.nextLine ( );
+                    System.out.println(info);
                 }
                 File myObj2 =new File(file+"\\"+a[2]);
-                Scanner MyReader2 = new Scanner ( myObj2 );  
-                while ( MyReader2.hasNextLine ( ) ) {        
-                    String info = MyReader2.nextLine ( );    
-                    System.out.println(info);              
+                Scanner MyReader2 = new Scanner ( myObj2 );
+                while ( MyReader2.hasNextLine ( ) ) {
+                    String info = MyReader2.nextLine ( );
+                    System.out.println(info);
                 }
             }
 
@@ -160,9 +160,15 @@ public class Main {
         Scanner input=new Scanner(System.in);
         Terminal t1=new Terminal();
         String[] inp;String a;
+        Parser parser = new Parser();
         while (true){
             a=input.nextLine();
             inp=a.split(" ");
+//            if (parser.parse(a)){
+//
+//            }else{
+//                System.out.println("Error: Command not found r invalid parameters are entered!");
+//            }
             if (inp[0].equals("pwd")){
                 System.out.println(t1.pwd());
             }else if(inp[0].equals("echo")){
