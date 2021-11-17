@@ -1,0 +1,26 @@
+package com.company;
+
+class Parser {
+    String commandName;
+    String[] args={"echo","pwd","cd","ls","ls -r","mkdir","rmdir","rm","touch","cp","cp -r","cat"};
+
+    //This method will divide the input into commandName and args
+//where "input" is the string command entered by the user
+    public boolean parse(String input){
+        boolean p = true;
+        String[] inp;
+        inp=input.split(" ");
+        for (int i=0;i<args.length;i++){
+            if (inp[0].equalsIgnoreCase(args[i])){
+                p= true;
+            }else {
+                p= false;
+            }
+        }
+        return p;
+    }
+
+    public String getCommandName(){
+        return commandName;
+    }
+}
