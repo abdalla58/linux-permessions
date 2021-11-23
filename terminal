@@ -1,4 +1,7 @@
 package com.company;
+/**
+ * @author abdalla ahmed 20190303& ahmed saber 20190037
+ */
 
 import java.io.*;
 import java.nio.file.Files;
@@ -6,7 +9,7 @@ import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class Main {
+class Main {
 
     public static class Parser{
         Main.Terminal terminal=new Main.Terminal();
@@ -116,9 +119,9 @@ public class Main {
                 String[] s = Path.list();
                 for (int i=0;i<s.length;i++){
                     Path=new File(file+"\\"+s[i]);
-                        if (Path.exists()){
-                            Path.delete();
-                        }
+                    if (Path.exists()){
+                        Path.delete();
+                    }
                 }
             }else{
                 File theDir=new File(file+"\\"+args);
@@ -169,14 +172,16 @@ public class Main {
                 }
             }
 
-        }public void cpr(String a1,String a2){
+        }public void cpr(String a1,String a2) throws IOException {
             File myobj=new File(file+"\\"+a1);
             File myobj2=new File(file+"\\"+a2);
             String[] List_of_Directories = myobj.list ( );
             for (String list_of_directory : List_of_Directories) {
                 File theDir = new File(myobj2+"\\"+list_of_directory);
-                if (!theDir.exists()){
+                if (!theDir.exists()&& !list_of_directory.contains("txt")){
                     theDir.mkdirs();
+                }else if (list_of_directory.contains("txt")){
+                    theDir.createNewFile();
                 }
             }
         }
@@ -196,6 +201,7 @@ public class Main {
         public void rm(String a){
             File myObj = new File(file+"\\"+a);
             if (myObj.delete()) {
+                //System.out.println("ok");
             }
         }
         public void cd(String args){
@@ -230,7 +236,7 @@ public class Main {
             }else if (inp[0].equalsIgnoreCase("exit")){
                 break;
             }else{
-                System.out.println("Error: Command not found r invalid parameters are entered!");
+                System.out.println("Error: Command not found or invalid parameters are entered!");
             }
         }
     }
